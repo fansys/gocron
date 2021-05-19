@@ -56,6 +56,7 @@ func (mail *Mail) send(mailSetting models.Mail, toUsers []string, msg Message) {
 	gomailMessage.SetBody("text/html", body)
 	mailer := gomail.NewDialer(mailSetting.Host, mailSetting.Port,
 		mailSetting.User, mailSetting.Password)
+	mailer.SSL = mailer.SSL || mailSetting.SSL
 	maxTimes := 3
 	i := 0
 	for i < maxTimes {

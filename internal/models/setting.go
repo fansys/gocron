@@ -177,6 +177,7 @@ func (setting *Setting) RemoveChannel(id int) (int64, error) {
 type Mail struct {
 	Host      string     `json:"host"`
 	Port      int        `json:"port"`
+	SSL       bool       `json:"ssl"`
 	User      string     `json:"user"`
 	Password  string     `json:"password"`
 	MailUsers []MailUser `json:"mail_users"`

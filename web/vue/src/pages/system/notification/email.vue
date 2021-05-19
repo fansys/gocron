@@ -11,9 +11,14 @@
               <el-input v-model="form.host"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="10">
+          <el-col :span="8">
             <el-form-item label="端口" prop="port">
               <el-input v-model.number="form.port"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="4">
+            <el-form-item label="SSL" prop="ssl" label-width="90px">
+              <el-switch v-model="form.ssl" active-value="true" inactive-value="false"></el-switch>
             </el-form-item>
           </el-col>
         </el-row>
@@ -86,6 +91,7 @@ export default {
       form: {
         host: '',
         port: 465,
+        ssl: 'false',
         user: '',
         password: '',
         template: ''
@@ -96,6 +102,9 @@ export default {
         ],
         port: [
           {type: 'number', required: true, message: '请输入有效的端口', trigger: 'blur'}
+        ],
+        ssl: [
+          {required: false, trigger: 'blur'}
         ],
         user: [
           {required: true, message: '请输入用户email', trigger: 'blur'}
@@ -161,6 +170,7 @@ export default {
         if (data.port) {
           this.form.port = data.port
         }
+        this.form.ssl = data.ssl
         this.form.user = data.user
         this.form.password = data.password
         this.form.template = data.template
