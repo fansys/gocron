@@ -170,7 +170,7 @@ export default {
         if (data.port) {
           this.form.port = data.port
         }
-        this.form.ssl = data.ssl
+        this.form.ssl = data.ssl === true ? 'true' : 'false'
         this.form.user = data.user
         this.form.password = data.password
         this.form.template = data.template

@@ -70,7 +70,7 @@ func Mail(ctx *macaron.Context) string {
 type MailServerForm struct {
 	Host     string `binding:"Required;MaxSize(100)"`
 	Port     int    `binding:"Required;Range(1-65535)"`
-	SSL      bool   `binding:"Required;In(true,false);Default(false)"`
+	Ssl      bool   `binding:"In(true,false);Default(false)"`
 	User     string `binding:"Required;MaxSize(64);Email"`
 	Password string `binding:"Required;MaxSize(64)"`
 }
