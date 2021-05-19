@@ -1,0 +1,51 @@
+name: Github CI for Gocron Docker
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+    paths-ignore:
+      - 'README.md'
+  pull_request:
+    branches: [ master ]
+    paths-ignore:
+      - 'README.md'
+
+env:
+  APPLICATION: 'gocron'
+
+jobs:
+  Gocron-Dokcer-Builder:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2.2.0
+        with:
+          path: gocron
+
+      - name: Set Environment Variables
+        run: |
+          timestamp=`date '+%Y%m%d'`
+          echo 'TIMESTAMP='$timestamp >> $GITHUB_ENV
+
+      # build docker images
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: ${{ github.workspace }}/gocron/
+          file: ${{ github.workspace }}/gocron/Dockerfile.workflow
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.APPLICATION }}:${{ env.TIMESTAMP }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.APPLICATION }}:latest
